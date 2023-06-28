@@ -8,6 +8,9 @@ import paralyzed from "./images/paralyzed.svg";
 import petrified from "./images/petrified.svg";
 import poisoned from "./images/poisoned.svg";
 import prone from "./images/prone.svg";
+import restrained from "./images/restrained.svg";
+import stunned from "./images/stunned.svg";
+import unconscious from "./images/unconscious.svg";
 
 /** Get the reverse domain name id for this plugin at a given path */
 export function getImage(image: string) {
@@ -36,12 +39,12 @@ export function getImage(image: string) {
             return poisoned;
         case "prone":
             return prone;
-        case "restrained": //TODO
-            return prone;
-        case "stunned": //TODO
-            return prone;
+        case "restrained":
+            return restrained;
+        case "stunned":
+            return stunned;
         case "unconscious":
-            return prone; //TODO
+            return stunned; //TODO
         default:
             return blinded;
     }
