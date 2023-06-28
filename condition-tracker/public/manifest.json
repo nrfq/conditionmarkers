@@ -1,9 +1,0 @@
-{
-  "name": "Condition Trackers",
-  "version": "1.0.0",
-  "manifest_version": 1,
-  "author": "Keegan Bergman",
-  "icon": "/logo.png",
-  "background_url": "/background.html",
-  "description": "Add condition markers to your characters to keep track of grapples, stuns, etc."
-}
