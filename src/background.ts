@@ -28,8 +28,8 @@ OBR.onReady(() => {
       OBR.popover.open({
         id: getPluginId("color-picker"),
         url: "/",
-        height: 88,
-        width: 216,
+        height: 158,
+        width: 266,
         anchorElementId: elementId,
       });
     },

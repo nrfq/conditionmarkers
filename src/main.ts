@@ -22,7 +22,8 @@ OBR.onReady(async () => {
               <div class="condition">
                 <img src="${getImage(condition)}"/>
               </div>
-              <div class="selectedIcon" id="${condition}Select">
+              <div class="condition-name">${condition}</div>
+              <div class="selected-icon" id="${condition}Select">
               </div>
             </button>
             `
@@ -35,6 +36,20 @@ OBR.onReady(async () => {
   document.querySelectorAll<HTMLButtonElement>(".condition-button").forEach((button) => {
     button.addEventListener("click", () => {
       handleButtonClick(button);
+    });
+
+    button.addEventListener("mouseover", () => {
+      const conditionName = button.querySelector<HTMLDivElement>(".condition-name");
+      if (conditionName) {
+        conditionName.style.visibility = "visible";
+      }
+    });
+
+    button.addEventListener("mouseout", () => {
+      const conditionName = button.querySelector<HTMLDivElement>(".condition-name");
+      if (conditionName) {
+        conditionName.style.visibility = "hidden";
+      }
     });
   });
 
@@ -49,7 +64,7 @@ async function handleButtonClick(button: HTMLButtonElement) {
   // Get the condition and selection state
   const condition = button.id; //Deafened, Blinded, Restrained, etc
   let selected = false;
-  const selectedButton = button.querySelector<HTMLDivElement>(".selectedIcon");
+  const selectedButton = button.querySelector<HTMLDivElement>(".selected-icon");
   if (selectedButton) {
     if (selectedButton.classList.contains("visible")) {
       selected = true;

@@ -14,7 +14,7 @@ export function isPlainObject(
 export async function updateConditionButtons(items: Item[]) {
   const selection = await OBR.player.getSelection();
   // Remove all previous selected states
-  document.querySelectorAll(".selectedIcon").forEach((element) => {
+  document.querySelectorAll(".selected-icon").forEach((element) => {
     element.classList.remove("visible");
   });
   // Get all the status rings that are attached to our current selection
@@ -51,7 +51,6 @@ export function buildConditionTracker(
     x: attached.position.x - offsetX + imgWidth / 2,
     y: attached.position.y - offsetY + imgHeight / 2,
   };
-  //TODO get the real image url
   const theImage = {
     width: 150,
     height: 150,
