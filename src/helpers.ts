@@ -56,7 +56,7 @@ export function buildConditionTracker(
     width: 150,
     height: 150,
     mime: "image/jpg",
-    url: `https://i.imgur.com/fHyEMsl.jpg`
+    url: `https://conditiontracker.onrender.com/images/${name.toLowerCase()}.png`
   }
   const tracker = buildImage(theImage, attached.grid)
     .scale({ x: scale, y: scale })
