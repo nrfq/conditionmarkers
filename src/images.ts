@@ -1,6 +1,8 @@
 import blinded from "./images/blinded.svg";
+import charmed from "./images/charmed.svg";
 import deafened from "./images/deafened.svg";
 import exhausted from "./images/exhausted.svg";
+import frightened from "./images/frightened.svg";
 import grappled from "./images/grappled.svg";
 import incapacitated from "./images/incapacitated.svg";
 import invisible from "./images/invisible.svg";
@@ -18,11 +20,11 @@ export function getImage(image: string) {
         case "blinded":
             return blinded;
         case "charmed":
-            return blinded; //TODO
+            return charmed;
         case "deafened":
             return deafened;
         case "frightened":
-            return deafened; //TODO
+            return frightened; 
         case "exhausted":
             return exhausted;
         case "grappled":
@@ -44,7 +46,7 @@ export function getImage(image: string) {
         case "stunned":
             return stunned;
         case "unconscious":
-            return stunned; //TODO
+            return unconscious;
         default:
             return blinded;
     }
