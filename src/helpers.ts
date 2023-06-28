@@ -14,8 +14,8 @@ export function isPlainObject(
 export async function updateConditionButtons(items: Item[]) {
   const selection = await OBR.player.getSelection();
   // Remove all previous selected states
-  document.querySelectorAll(".condition-button").forEach((element) => {
-    element.classList.remove("selected");
+  document.querySelectorAll(".selectedIcon").forEach((element) => {
+    element.classList.remove("visible");
   });
   // Get all the status rings that are attached to our current selection
   for (const item of items) {
@@ -29,7 +29,7 @@ export async function updateConditionButtons(items: Item[]) {
     ) {
       // Add selected state to this rings color
       const condition = item.name.replace("Condition Tracker - ", "");
-      document.getElementById(condition)?.classList.add("selected");
+      document.getElementById(`${condition}Select`)?.classList.add("visible");
     }
   }
 }

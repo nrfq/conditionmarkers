@@ -22,6 +22,8 @@ OBR.onReady(async () => {
               <div class="condition">
                 <img src="${getImage(condition)}"/>
               </div>
+              <div class="selectedIcon" id="${condition}Select">
+              </div>
             </button>
             `
         )
@@ -46,7 +48,13 @@ OBR.onReady(async () => {
 async function handleButtonClick(button: HTMLButtonElement) {
   // Get the condition and selection state
   const condition = button.id; //Deafened, Blinded, Restrained, etc
-  const selected = button.classList.contains("selected"); //Whether this button was already selected or not
+  let selected = false;
+  const selectedButton = button.querySelector<HTMLDivElement>(".selectedIcon");
+  if (selectedButton) {
+    if (selectedButton.classList.contains("visible")) {
+      selected = true;
+    }
+  } //Whether this button was already selected or not
   const selection = await OBR.player.getSelection();
 
   if (selection) {
