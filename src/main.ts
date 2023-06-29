@@ -9,7 +9,6 @@ import { getImage } from "./images";
  * This file represents the HTML of the popover that is shown once
  * the condition marker context menu item is clicked.
  */
-
 OBR.onReady(async () => {
   // Setup the document with the condition buttons
   document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
@@ -32,7 +31,7 @@ OBR.onReady(async () => {
     </div>
   `;
 
-  // Attach click listeners
+  // Attach click and hover listeners
   document.querySelectorAll<HTMLButtonElement>(".condition-button").forEach((button) => {
     button.addEventListener("click", () => {
       handleButtonClick(button);
@@ -41,9 +40,6 @@ OBR.onReady(async () => {
     button.addEventListener("mouseover", () => {
       const conditionName = button.querySelector<HTMLDivElement>(".condition-name");
       if (conditionName) {
-        if (conditionName.innerHTML === "Incapacitated") {
-          conditionName.style.fontSize = "7px";
-        }
         conditionName.style.visibility = "visible";
       }
     });
@@ -73,16 +69,17 @@ async function handleButtonClick(button: HTMLButtonElement) {
     if (selectedButton.classList.contains("visible")) {
       selected = true;
     }
-  } //Whether this button was already selected or not
+  } 
+  //Whether this button was already selected or not
   const selection = await OBR.player.getSelection();
 
-  if (selection) {
-    //Create a condition marker and attach to the item
-    // Get all selected items
-    const itemsSelected = await OBR.scene.items.getItems<Image>(selection);
+  if (selection) { //Create a condition marker and attach to the item or remove already placed marker
     const markersToAdd: Image[] = [];
     const markersToDelete: string[] = [];
     const itemsWithChangedMarkers: Image[] = [];
+
+    // Get all selected items
+    const itemsSelected = await OBR.scene.items.getItems<Image>(selection);
     //Get all already made condition markers on the scene
     const conditionMarkers = await OBR.scene.items.getItems<Image>((item) => {
       const metadata = item.metadata[getPluginId("metadata")];
@@ -91,16 +88,12 @@ async function handleButtonClick(button: HTMLButtonElement) {
 
     for (const item of itemsSelected) {
       // Find all markers attached to this item
-      const attachedMarkers = conditionMarkers.filter(
-        (marker) => marker.attachedTo === item.id
-      );
+      const attachedMarkers = conditionMarkers.filter((marker) => marker.attachedTo === item.id);
 
       // Find all markers of the selected name
-      const matchedMarkers = attachedMarkers.filter(
-        (marker) => marker.name.includes(condition)
-      );
+      const matchedMarkers = attachedMarkers.filter((marker) => marker.name.includes(condition));
 
-      // Delete the marker if it is selected else add a new marker
+      // Delete the marker if it is selected, otherwise add a new marker
       if (selected) {
         markersToDelete.push(...matchedMarkers.map((marker) => marker.id));
         itemsWithChangedMarkers.push(item);
@@ -116,6 +109,7 @@ async function handleButtonClick(button: HTMLButtonElement) {
       await OBR.scene.items.deleteItems(markersToDelete);
     }
 
+    // Reposition/shift other markers for items with deleted markers
     for (let i = 0; i < itemsWithChangedMarkers.length; i++) {
       repositionConditionMarker(itemsWithChangedMarkers[i]);
     }

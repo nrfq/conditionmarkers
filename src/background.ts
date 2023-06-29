@@ -26,7 +26,7 @@ OBR.onReady(() => {
     ],
     onClick(_, elementId) {
       OBR.popover.open({
-        id: getPluginId("color-picker"),
+        id: getPluginId("condition-markers"),
         url: "/",
         height: 266,
         width: 266,

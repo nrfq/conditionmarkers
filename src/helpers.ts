@@ -20,13 +20,11 @@ export async function updateConditionButtons(items: Item[]) {
   // Get all the markers that are attached to our current selection
   for (const item of items) {
     const metadata = item.metadata[getPluginId("metadata")];
-    if (
-      isPlainObject(metadata) &&
+    if (isPlainObject(metadata) &&
       metadata.enabled &&
       isImage(item) &&
       item.attachedTo &&
-      selection?.includes(item.attachedTo)
-    ) {
+      selection?.includes(item.attachedTo)) {
       // Add selected state to this marker
       const condition = item.name.replace("Condition Marker - ", "");
       document.getElementById(`${condition}Select`)?.classList.add("visible");
@@ -35,7 +33,7 @@ export async function updateConditionButtons(items: Item[]) {
 }
 
 /**
- * Helper to build a circle shape with the proper size to match
+ * Helper to build and position a marker to match
  * the input image's size
  */
 export async function buildConditionMarker(
@@ -76,6 +74,10 @@ export async function buildConditionMarker(
   return marker;
 }
 
+/**
+ * Gather the marker's position based on the image size and position and the
+ * number of other markers on the image already
+ */
 async function getMarkerPosition(item: Image, count: number) {
   const imgWidth = item.image.width;
   const imgHeight = item.image.height;
@@ -87,7 +89,7 @@ async function getMarkerPosition(item: Image, count: number) {
   const bounds = await OBR.scene.items.getItemBounds([item.id]);
 
   //Figure out the image's aspect ratio
-  //Divide the image's aspect ratio in to a grid (w/ a minimum of 3 on the shortest side)
+  //Divide the image's aspect ratio in to a grid (w/ a minimum of 5 on the shortest side)
   if (imgHeight / imgWidth > 1) {
     const height = imgHeight / imgWidth;
     markersWide = 5;
@@ -114,7 +116,7 @@ async function getMarkerPosition(item: Image, count: number) {
 
   //Reposition item based on rotation
   if (item.rotation !== 0) {
-    //TODO
+    //TODO big time math
   }
 
   return {
@@ -126,26 +128,28 @@ async function getMarkerPosition(item: Image, count: number) {
 }
 
 /**
- * Helper to build a circle shape with the proper size to match
- * the input image's size
+ * Reposition a marker after one was deleted, always hug the upper left corner
  */
 export async function repositionConditionMarker(item: Image) {
-  //Look through this item's attached markers and reposition them
+
+  //Grab all condition markers on the scene
   const conditionMarkers = await OBR.scene.items.getItems<Image>((item) => {
     const metadata = item.metadata[getPluginId("metadata")];
     return Boolean(isPlainObject(metadata) && metadata.enabled);
   });
+
   // Find all markers attached to this item
   const attachedMarkers = conditionMarkers.filter(
     (marker) => marker.attachedTo === item.id
   );
 
+  // Get this marker's new position given it's new position in the grid
   const newMarkerInfo: { x: number; y: number, size: number }[] = [];
   for (let i = 0; i < attachedMarkers.length; i++) {
     newMarkerInfo.push(await getMarkerPosition(item, i));
   }
 
-  // Reposition the markers based on their new array positions
+  // Reposition the markers in the scene based on their new grid positions
   await OBR.scene.items.updateItems(attachedMarkers, (images) => {
     for (let i = 0; i < images.length; i++) {
       images[i].position.x = newMarkerInfo[i].x;
