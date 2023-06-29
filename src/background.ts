@@ -5,7 +5,7 @@ import icon from "./icon.svg";
 
 /**
  * This file represents the background script run when the plugin loads.
- * It creates the context menu item for the status ring.
+ * It creates the context menu item for the condition markers.
  */
 
 OBR.onReady(() => {

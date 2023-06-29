@@ -1,13 +1,13 @@
 import OBR, { Image } from "@owlbear-rodeo/sdk";
 import { conditions } from "./conditions";
 import { getPluginId } from "./getPluginId";
-import { buildConditionTracker, isPlainObject, updateConditionButtons, repositionConditionTracker } from "./helpers";
+import { buildConditionMarker, isPlainObject, updateConditionButtons, repositionConditionMarker } from "./helpers";
 import "./style.css";
 import { getImage } from "./images";
 
 /**
  * This file represents the HTML of the popover that is shown once
- * the status ring context menu item is clicked.
+ * the condition marker context menu item is clicked.
  */
 
 OBR.onReady(async () => {
@@ -80,45 +80,44 @@ async function handleButtonClick(button: HTMLButtonElement) {
     //Create a condition marker and attach to the item
     // Get all selected items
     const itemsSelected = await OBR.scene.items.getItems<Image>(selection);
-    // Get the grid dpi so we can scale the rings
-    const trackersToAdd: Image[] = [];
-    const trackersToDelete: string[] = [];
-    const itemsWithChangedTrackers: Image[] = [];
+    const markersToAdd: Image[] = [];
+    const markersToDelete: string[] = [];
+    const itemsWithChangedMarkers: Image[] = [];
     //Get all already made condition markers on the scene
-    const conditionTrackers = await OBR.scene.items.getItems<Image>((item) => {
+    const conditionMarkers = await OBR.scene.items.getItems<Image>((item) => {
       const metadata = item.metadata[getPluginId("metadata")];
       return Boolean(isPlainObject(metadata) && metadata.enabled);
     });
 
     for (const item of itemsSelected) {
-      // Find all trackers attached to this item
-      const attachedTrackers = conditionTrackers.filter(
-        (tracker) => tracker.attachedTo === item.id
+      // Find all markers attached to this item
+      const attachedMarkers = conditionMarkers.filter(
+        (marker) => marker.attachedTo === item.id
       );
 
-      // Find all trackers of the selected name
-      const matchedTrackers = attachedTrackers.filter(
-        (tracker) => tracker.name.includes(condition)
+      // Find all markers of the selected name
+      const matchedMarkers = attachedMarkers.filter(
+        (marker) => marker.name.includes(condition)
       );
 
-      // Delete the tracker if it is selected else add a new tracker
+      // Delete the marker if it is selected else add a new marker
       if (selected) {
-        trackersToDelete.push(...matchedTrackers.map((tracker) => tracker.id));
-        itemsWithChangedTrackers.push(item);
+        markersToDelete.push(...matchedMarkers.map((marker) => marker.id));
+        itemsWithChangedMarkers.push(item);
       } else {
-        trackersToAdd.push(await buildConditionTracker(condition, item, item.scale.x, attachedTrackers.length));
+        markersToAdd.push(await buildConditionMarker(condition, item, item.scale.x, attachedMarkers.length));
       }
     }
     
-    if (trackersToAdd.length > 0) {
-      await OBR.scene.items.addItems(trackersToAdd);
+    if (markersToAdd.length > 0) {
+      await OBR.scene.items.addItems(markersToAdd);
     }
-    if (trackersToDelete.length > 0) {
-      await OBR.scene.items.deleteItems(trackersToDelete);
+    if (markersToDelete.length > 0) {
+      await OBR.scene.items.deleteItems(markersToDelete);
     }
 
-    for (let i = 0; i < itemsWithChangedTrackers.length; i++) {
-      repositionConditionTracker(itemsWithChangedTrackers[i]);
+    for (let i = 0; i < itemsWithChangedMarkers.length; i++) {
+      repositionConditionMarker(itemsWithChangedMarkers[i]);
     }
   }
 }
