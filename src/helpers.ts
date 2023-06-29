@@ -74,6 +74,24 @@ export async function buildConditionMarker(
   return marker;
 }
 
+function translatePositionAfterRotation(centerX: number, centerY: number, x: number, y: number, theta: number) {
+  // Step 1: Calculate the translation vector
+  const tx = centerX - x;
+  const ty = centerY - y;
+
+  // Step 2: Apply rotation to the translation vector
+  const thetaRad = (theta * Math.PI) / 180;
+  const rotatedTx = tx * Math.cos(thetaRad) - ty * Math.sin(thetaRad);
+  const rotatedTy = tx * Math.sin(thetaRad) + ty * Math.cos(thetaRad);
+
+  // Step 3: Calculate the new position
+  const newX = centerX - rotatedTx;
+  const newY = centerY - rotatedTy;
+
+  // Return the new position
+  return [newX, newY];
+}
+
 /**
  * Gather the marker's position based on the image size and position and the
  * number of other markers on the image already
@@ -116,7 +134,9 @@ async function getMarkerPosition(item: Image, count: number) {
 
   //Reposition item based on rotation
   if (item.rotation !== 0) {
-    //TODO big time math
+    const newPos = translatePositionAfterRotation(item.position.x, item.position.y, markerLeft, markerTop, item.rotation);
+    markerLeft = newPos[0];
+    markerTop = newPos[1];
   }
 
   return {
