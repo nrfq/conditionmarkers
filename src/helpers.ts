@@ -17,7 +17,7 @@ export async function updateConditionButtons(items: Item[]) {
   document.querySelectorAll(".selected-icon").forEach((element) => {
     element.classList.remove("visible");
   });
-  // Get all the status rings that are attached to our current selection
+  // Get all the trackers that are attached to our current selection
   for (const item of items) {
     const metadata = item.metadata[getPluginId("metadata")];
     if (
@@ -27,8 +27,8 @@ export async function updateConditionButtons(items: Item[]) {
       item.attachedTo &&
       selection?.includes(item.attachedTo)
     ) {
-      // Add selected state to this rings color
-      const condition = item.name.replace("Condition Tracker - ", "");
+      // Add selected state to this tracker
+      const condition = item.name.replace("Condition Marker - ", "");
       document.getElementById(`${condition}Select`)?.classList.add("visible");
     }
   }
@@ -38,31 +38,32 @@ export async function updateConditionButtons(items: Item[]) {
  * Helper to build a circle shape with the proper size to match
  * the input image's size
  */
-export function buildConditionTracker(
+export async function buildConditionTracker(
   name: String,
   attached: Image,
-  scale: number
+  scale: number,
+  attachedCount: number,
 ) {
-  const imgWidth = attached.image.width;
-  const imgHeight = attached.image.height;
-  const offsetX = (attached.grid.offset.x / attached.image.width) * imgWidth;
-  const offsetY = (attached.grid.offset.y / attached.image.height) * imgHeight;
+
+  const trackerReturn = await getTrackerPosition(attached, attachedCount);
+
   const position = {
-    x: attached.position.x - offsetX + imgWidth / 2,
-    y: attached.position.y - offsetY + imgHeight / 2,
+    x: trackerReturn.x,
+    y: trackerReturn.y,
   };
+  
   const theImage = {
-    width: 150,
-    height: 150,
+    width: trackerReturn.size,
+    height: trackerReturn.size,
     mime: "image/jpg",
-    url: `https://conditiontracker.onrender.com/images/${name.toLowerCase()}.png`
+    url: `https://conditiontracker.onrender.com/images/${name.toLowerCase().replace(" ", "_").replace("'", "").replace("-", "")}.png`
   }
   const tracker = buildImage(theImage, attached.grid)
     .scale({ x: scale, y: scale })
     .position(position)
     .attachedTo(attached.id)
     .locked(true)
-    .name(`Condition Tracker - ${name}`)
+    .name(`Condition Marker - ${name}`)
     .metadata({ [getPluginId("metadata")]: { enabled: true } })
     .layer("ATTACHMENT")
     .disableHit(true)
@@ -70,4 +71,77 @@ export function buildConditionTracker(
     .build();
 
   return tracker;
+}
+
+async function getTrackerPosition(item: Image, count: number) {
+
+  const imgWidth = item.image.width;
+  const imgHeight = item.image.height;
+
+  let markersWide = 0;
+  let markersTall = 0;
+  let markerDimensionPos = 0;
+  let markerDimensionSize = 0;
+  const bounds = await OBR.scene.items.getItemBounds([item.id]);
+
+  //Figure out the image's aspect ratio
+  //Divide the image's aspect ratio in to a grid (w/ a minimum of 3 on the shortest side)
+  if (imgHeight / imgWidth > 1) {
+    const height = imgHeight / imgWidth;
+    markersWide = 5;
+    markersTall = Math.round(height * 5);
+    markerDimensionPos = bounds.height / markersTall;
+    markerDimensionSize = imgHeight / markersTall;
+  }
+  else {
+    const width = imgWidth / imgHeight;
+    markersWide = Math.round(width * 5);
+    markersTall = 5;
+    markerDimensionPos = bounds.width / markersWide;
+    markerDimensionSize = imgWidth / markersWide;
+  }
+
+  const left = item.position.x;
+  const top = item.position.y;
+
+  let row = Math.floor(count / markersWide);
+  let col = count % markersWide;
+  
+  let markerLeft = left + markerDimensionPos * col;
+  let markerTop = top + markerDimensionPos * row;
+
+  return {
+    x: markerLeft,
+    y: markerTop,
+    size: markerDimensionSize,
+  }
+}
+
+/**
+ * Helper to build a circle shape with the proper size to match
+ * the input image's size
+ */
+export async function repositionConditionTracker(item: Image) {
+  //Look through this item's attached trackers and reposition them
+  const conditionTrackers = await OBR.scene.items.getItems<Image>((item) => {
+    const metadata = item.metadata[getPluginId("metadata")];
+    return Boolean(isPlainObject(metadata) && metadata.enabled);
+  });
+  // Find all trackers attached to this item
+  const attachedTrackers = conditionTrackers.filter(
+    (tracker) => tracker.attachedTo === item.id
+  );
+  // Reposition the trackers based on their new array positions
+  for (let i = 0; i < attachedTrackers.length; i++) {
+    const trackerReturn = await getTrackerPosition(item, i);
+    const thisTracker = attachedTrackers[i];
+    let interaction = await OBR.interaction.startItemInteraction(thisTracker);
+    const [update] = interaction;
+    update((thisTracker) => {
+      thisTracker.position.x = trackerReturn.x;
+      thisTracker.position.y = trackerReturn.y;
+    });
+    const [_, stop] = interaction;
+    stop();
+  }
 }

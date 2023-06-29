@@ -26,7 +26,7 @@ import reaction_used from "./images/reaction_used.svg";
 
 /** Get the reverse domain name id for this plugin at a given path */
 export function getImage(image: string) {
-    switch (image.toLowerCase().replace(" ", "_").replace("'", "")) {
+    switch (image.toLowerCase().replace(" ", "_").replace("'", "").replace("-", "")) {
         case "blinded":
             return blinded;
         case "charmed":

@@ -1,7 +1,7 @@
 import OBR, { Image } from "@owlbear-rodeo/sdk";
 import { conditions } from "./conditions";
 import { getPluginId } from "./getPluginId";
-import { buildConditionTracker, isPlainObject, updateConditionButtons } from "./helpers";
+import { buildConditionTracker, isPlainObject, updateConditionButtons, repositionConditionTracker } from "./helpers";
 import "./style.css";
 import { getImage } from "./images";
 
@@ -59,6 +59,7 @@ OBR.onReady(async () => {
   // Update the button states with the current selection
   const allItems = await OBR.scene.items.getItems();
   updateConditionButtons(allItems);
+
   // Add change listener for updating button states
   OBR.scene.items.onChange(updateConditionButtons);
 });
@@ -76,20 +77,21 @@ async function handleButtonClick(button: HTMLButtonElement) {
   const selection = await OBR.player.getSelection();
 
   if (selection) {
-    //Create a condition tracker and attach to the item
+    //Create a condition marker and attach to the item
     // Get all selected items
     const itemsSelected = await OBR.scene.items.getItems<Image>(selection);
     // Get the grid dpi so we can scale the rings
     const trackersToAdd: Image[] = [];
     const trackersToDelete: string[] = [];
-    //Get all already made condition trackers on the scene
+    const itemsWithChangedTrackers: Image[] = [];
+    //Get all already made condition markers on the scene
     const conditionTrackers = await OBR.scene.items.getItems<Image>((item) => {
       const metadata = item.metadata[getPluginId("metadata")];
       return Boolean(isPlainObject(metadata) && metadata.enabled);
     });
 
     for (const item of itemsSelected) {
-      // Find all rings attached to this item
+      // Find all trackers attached to this item
       const attachedTrackers = conditionTrackers.filter(
         (tracker) => tracker.attachedTo === item.id
       );
@@ -99,11 +101,12 @@ async function handleButtonClick(button: HTMLButtonElement) {
         (tracker) => tracker.name.includes(condition)
       );
 
-      // Delete the tracker if it is selected else add a new ring
+      // Delete the tracker if it is selected else add a new tracker
       if (selected) {
         trackersToDelete.push(...matchedTrackers.map((tracker) => tracker.id));
+        itemsWithChangedTrackers.push(item);
       } else {
-        trackersToAdd.push(buildConditionTracker(condition, item, item.scale.x));
+        trackersToAdd.push(await buildConditionTracker(condition, item, item.scale.x, attachedTrackers.length));
       }
     }
     
@@ -112,6 +115,10 @@ async function handleButtonClick(button: HTMLButtonElement) {
     }
     if (trackersToDelete.length > 0) {
       await OBR.scene.items.deleteItems(trackersToDelete);
+    }
+
+    for (let i = 0; i < itemsWithChangedTrackers.length; i++) {
+      repositionConditionTracker(itemsWithChangedTrackers[i]);
     }
   }
 }

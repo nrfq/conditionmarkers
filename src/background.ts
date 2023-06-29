@@ -14,7 +14,7 @@ OBR.onReady(() => {
     icons: [
       {
         icon,
-        label: "Condition Tracker",
+        label: "Condition Markers",
         filter: {
           every: [
             { key: "type", value: "IMAGE" },
@@ -28,8 +28,8 @@ OBR.onReady(() => {
       OBR.popover.open({
         id: getPluginId("color-picker"),
         url: "/",
-        height: 270,
-        width: 270,
+        height: 266,
+        width: 266,
         anchorElementId: elementId,
       });
     },
