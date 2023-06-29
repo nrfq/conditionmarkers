@@ -13,10 +13,20 @@ import prone from "./images/prone.svg";
 import restrained from "./images/restrained.svg";
 import stunned from "./images/stunned.svg";
 import unconscious from "./images/unconscious.svg";
+import baned from "./images/baned.svg";
+import blessed from "./images/blessed.svg";
+import concentrating from "./images/concentrating.svg";
+import dodge from "./images/dodge.svg";
+import hastened from "./images/hastened.svg";
+import hexed from "./images/hexed.svg";
+import holding_action from "./images/holding_action.svg";
+import hunters_mark from "./images/hunters_mark.svg";
+import raging from "./images/raging.svg";
+import reaction_used from "./images/reaction_used.svg";
 
 /** Get the reverse domain name id for this plugin at a given path */
 export function getImage(image: string) {
-    switch (image.toLowerCase()) {
+    switch (image.toLowerCase().replace(" ", "_").replace("'", "")) {
         case "blinded":
             return blinded;
         case "charmed":
@@ -47,6 +57,26 @@ export function getImage(image: string) {
             return stunned;
         case "unconscious":
             return unconscious;
+        case "baned":
+            return baned;
+        case "blessed":
+            return blessed;
+        case "concentrating":
+            return concentrating;
+        case "dodge":
+            return dodge;
+        case "hastened":
+            return hastened;
+        case "hexed":
+            return hexed;
+        case "holding_action":
+            return holding_action;
+        case "hunters_mark":
+            return hunters_mark;
+        case "raging":
+            return raging;
+        case "reaction_used":
+            return reaction_used;
         default:
             return blinded;
     }

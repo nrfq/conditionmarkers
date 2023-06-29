@@ -1,7 +1,7 @@
 import OBR from "@owlbear-rodeo/sdk";
 import { getPluginId } from "./getPluginId";
 
-import icon from "./status.svg";
+import icon from "./icon.svg";
 
 /**
  * This file represents the background script run when the plugin loads.
@@ -28,8 +28,8 @@ OBR.onReady(() => {
       OBR.popover.open({
         id: getPluginId("color-picker"),
         url: "/",
-        height: 158,
-        width: 266,
+        height: 270,
+        width: 270,
         anchorElementId: elementId,
       });
     },

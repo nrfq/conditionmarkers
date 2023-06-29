@@ -41,6 +41,9 @@ OBR.onReady(async () => {
     button.addEventListener("mouseover", () => {
       const conditionName = button.querySelector<HTMLDivElement>(".condition-name");
       if (conditionName) {
+        if (conditionName.innerHTML === "Incapacitated") {
+          conditionName.style.fontSize = "7px";
+        }
         conditionName.style.visibility = "visible";
       }
     });
