@@ -75,6 +75,29 @@ export async function buildConditionMarker(
 }
 
 function translatePositionAfterRotation(centerX: number, centerY: number, x: number, y: number, theta: number) {
+ theta) {
+  // Convert the rotation angle from degrees to radians
+  var thetaRad = (theta * Math.PI) / 180;
+
+  // Calculate the distance from the center to the original position
+  var dx = x - centerX;
+  var dy = y - centerY;
+  var distance = Math.sqrt(dx * dx + dy * dy);
+
+  // Calculate the angle between the line connecting the center and original position
+  // and the positive x-axis using the arctangent function
+  var angle = Math.atan2(dy, dx);
+
+  // Apply the rotation to the angle
+  var newAngle = angle + thetaRad;
+
+  // Calculate the new position based on the rotated angle and distance
+  var newX = centerX + distance * Math.cos(newAngle);
+  var newY = centerY + distance * Math.sin(newAngle);
+
+  // Return the new position
+  return [newX, newY];
+  
   // Step 1: Calculate the translation vector
   const tx = centerX - x;
   const ty = centerY - y;
