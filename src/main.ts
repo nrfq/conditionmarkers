@@ -24,18 +24,6 @@ OBR.onReady(async () => {
           <img class="page-icon" src="${getImage("left")}"/>
         </div>
         <div class="conditions-area">
-        ${currentConditions
-          .map(
-            (condition) =>
-              `<button class="condition-button" id="${condition}">
-                <div class="condition">
-                  <img src="${getImage(condition)}"/>
-                </div>
-                <div class="condition-name"><p>${condition}</p></div>
-                <div class="selected-icon" id="${condition}Select"></div>
-              </button>`
-          )
-          .join("")}
         </div>
         <div class="page-right">
           <img class="page-icon" src="${getImage("right")}"/>
@@ -44,26 +32,7 @@ OBR.onReady(async () => {
     </div>
   `;
 
-  // Attach click and hover listeners
-  document.querySelectorAll<HTMLButtonElement>(".condition-button").forEach((button) => {
-    button.addEventListener("click", () => {
-      handleButtonClick(button);
-    });
-
-    button.addEventListener("mouseover", () => {
-      const conditionName = button.querySelector<HTMLDivElement>(".condition-name");
-      if (conditionName) {
-        conditionName.style.visibility = "visible";
-      }
-    });
-
-    button.addEventListener("mouseout", () => {
-      const conditionName = button.querySelector<HTMLDivElement>(".condition-name");
-      if (conditionName) {
-        conditionName.style.visibility = "hidden";
-      }
-    });
-  });
+  loadConditions();
   
   // Attach input listeners
   const input = document.querySelector(".condition-filter");
@@ -82,7 +51,6 @@ OBR.onReady(async () => {
     pageLeft.addEventListener("click", (event: Event) => {
       if (!event.target.classList.contains("disabled") && currentPage > 1) {
         currentPage -= 1;
-        console.log(currentPage);
         showPage();
       }
     });
@@ -92,7 +60,6 @@ OBR.onReady(async () => {
       console.log("clicked");
       if (!event.target.classList.contains("disabled") && currentPage < 4) {
         currentPage += 1;
-        console.log(currentPage);
         showPage();
       }
     });
@@ -106,7 +73,7 @@ OBR.onReady(async () => {
   OBR.scene.items.onChange(updateConditionButtons);
 });
 
-function loadConditions() {
+async function loadConditions() {
   const conditionsArea = document.querySelector(".conditions-area");
   conditionsArea!.innerHTML = `
       ${currentConditions
@@ -143,12 +110,16 @@ function loadConditions() {
       }
     });
   });
+
+  const allItems = await OBR.scene.items.getItems();
+  updateConditionButtons(allItems);
 }
 
 function showPage() {
   switch(currentPage) {
     case 1:
       disablePage("left");
+      enablePage("right");
       currentConditions = conditions.slice(0, 16);
       break;
     case 2:
@@ -162,6 +133,7 @@ function showPage() {
       currentConditions = conditions.slice(32, 48);
       break;
     case 4:
+      enablePage("left");
       disablePage("right");
       currentConditions = conditions.slice(48, 64);
       break;
@@ -173,10 +145,10 @@ function disablePage(page: string) {
   const pageLeft = document.querySelector(".page-left");
   const pageRight = document.querySelector(".page-right");
 
-  if (page === "left") {
+  if (page === "left" && pageLeft) {
     pageLeft.classList.add("disabled");
   }
-  else if (page === "right") {
+  else if (page === "right" && pageRight) {
     pageRight.classList.add("disabled");
   }
 }
@@ -185,15 +157,23 @@ function enablePage(page: string) {
   const pageLeft = document.querySelector(".page-left");
   const pageRight = document.querySelector(".page-right");
   
-  if (page === "left") {
+  if (page === "left" && pageLeft) {
     pageLeft.classList.remove("disabled");
   }
-  else if (page === "right") {
+  else if (page === "right" && pageRight) {
     pageRight.classList.remove("disabled");
   }
 }
 
 async function filterConditions(filterString: string) {
+  if (filterString.length === 0) {
+    showPage();
+    return;
+  }
+  else {
+    disablePage("left");
+    disablePage("right");
+  }
   const conditionsElem = document.querySelector(".conditions-area");
 
   const conditionsToAdd = [];
@@ -261,14 +241,18 @@ async function filterConditions(filterString: string) {
     }
   }
   
-  const currentConditions = document.querySelectorAll<HTMLButtonElement>(".condition-button");
-  if (currentConditions.length !== conditionsToAdd.length) {
-    currentConditions.forEach((button) => {
+  //Doing it this way prevents flickering
+  const conditionsNow = document.querySelectorAll<HTMLButtonElement>(".condition-button");
+  if (conditionsNow.length !== conditionsToAdd.length) {
+    conditionsNow.forEach((button) => {
       conditionsElem?.removeChild(button);
     })
     conditionsToAdd.forEach((button) => {
       conditionsElem?.appendChild(button);
     })
+
+    const allItems = await OBR.scene.items.getItems();
+    updateConditionButtons(allItems);
   }
 }
 
@@ -308,6 +292,10 @@ async function handleButtonClick(button: HTMLButtonElement) {
       // Delete the marker if it is selected, otherwise add a new marker
       if (selected) {
         markersToDelete.push(...matchedMarkers.map((marker) => marker.id));
+        if (selectedButton) {
+          selectedButton.style.visibility = "hidden";
+          selectedButton.classList.remove("visible");
+        }
         itemsWithChangedMarkers.push(item);
       } else {
         markersToAdd.push(await buildConditionMarker(condition, item, item.scale.x, attachedMarkers.length));

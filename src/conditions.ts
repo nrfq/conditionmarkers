@@ -54,7 +54,7 @@ export const conditions = [
   "Divine Favor",
   "Highlighted",
   "Slayer's Prey",
-  "Stabelized",
+  "Stabilized",
   "Shell Defense",
   "Bear's Endurance",
   "Bull's Strength",
