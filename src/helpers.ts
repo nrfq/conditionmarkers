@@ -67,7 +67,7 @@ export async function buildConditionMarker(
     .name(`Condition Marker - ${name}`)
     .metadata({ [getPluginId("metadata")]: { enabled: true } })
     .layer("ATTACHMENT")
-    .disableHit(true)
+    .disableHit(false)
     .visible(attached.visible)
     .build();
 
@@ -134,9 +134,9 @@ async function getMarkerPosition(item: Image, count: number) {
 
   //Reposition item based on rotation
   if (item.rotation !== 0) {
-    const newPos = translatePositionAfterRotation(item.position.x, item.position.y, markerLeft, markerTop, item.rotation);
-    markerLeft = newPos[0];
-    markerTop = newPos[1];
+    //const newPos = translatePositionAfterRotation(item.position.x, item.position.y, markerLeft, markerTop, item.rotation);
+    //markerLeft = newPos[0];
+    //markerTop = newPos[1];
   }
 
   return {
