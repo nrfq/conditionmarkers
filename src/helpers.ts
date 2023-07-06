@@ -75,16 +75,16 @@ export async function buildConditionMarker(
 }
 
 function translatePositionAfterRotation(centerX: number, centerY: number, x: number, y: number, theta: number) {  
-  // Step 1: Calculate the translation vector
+  // Calculate the translation vector
   const tx = centerX - x;
   const ty = centerY - y;
 
-  // Step 2: Apply rotation to the translation vector
+  // Apply rotation to the translation vector
   const thetaRad = (theta * Math.PI) / 180;
   const rotatedTx = tx * Math.cos(thetaRad) - ty * Math.sin(thetaRad);
   const rotatedTy = tx * Math.sin(thetaRad) + ty * Math.cos(thetaRad);
 
-  // Step 3: Calculate the new position
+  // Calculate the new position
   const newX = centerX - rotatedTx;
   const newY = centerY - rotatedTy;
 
@@ -134,6 +134,9 @@ async function getMarkerPosition(item: Image, count: number) {
 
   //Reposition item based on rotation
   if (item.rotation !== 0) {
+    //This almost works. 
+    //Something might be wrong with the OBR API, because item.position and bounds.center both are giving top left for the selected item.
+    //This works perfectly for 0, 90, 180, and 270, strangely.
     const newPos = translatePositionAfterRotation(item.position.x, item.position.y, markerLeft, markerTop, item.rotation);
     markerLeft = newPos[0];
     markerTop = newPos[1];

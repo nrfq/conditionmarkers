@@ -9,10 +9,10 @@ body {
 }
 
 .conditions {
-  max-width: 250px;
   padding: 4px 8px;
   display: flex;
   flex-wrap: wrap;
+  height: 100%;
 }
 
 .condition-button {
@@ -73,7 +73,101 @@ body {
   top: 2px;
   left: 2px;
   background-color: rgba(0, 0, 0, .75);
-  height: 29px;
+  height: 46px;
   border-radius: 23px;
-  padding-top: 17px;
+  display: flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.search-area {
+  width: 100%;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  background-color: rgb(34, 37, 49);
+  padding: 2px;
+  border: 0px none;
+  border-radius: 12px;
+  height: 32.5px;
+}
+
+.lower-flex {
+  display: flex;
+  height: 200px;
+}
+
+.conditions-area {
+  height: 100%;
+  overflow: hidden;
+  width: 200px;
+}
+
+.page-left {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 98%;
+  width: 20px;
+  border-radius: 10px;
+  margin-right: 2px;
+}
+
+.page-left:hover {
+  cursor: pointer;
+  background-color: rgb(76, 79, 95);
+}
+
+.page-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 98%;
+  width: 20px;
+  border-radius: 10px;
+  margin-left: 2px;
+}
+
+.page-right:hover {
+  cursor: pointer;
+  background-color: rgb(76, 79, 95);
+}
+
+.page-icon {
+  width: 75%;
+  pointer-events: none;
+}
+
+.disabled .page-icon {
+  filter: brightness(0) saturate(100%) invert(16%) sepia(9%) saturate(1936%) hue-rotate(194deg) brightness(93%) contrast(88%);
+}
+
+.disabled:hover {
+  cursor: unset;
+  background-color: rgb(61, 64, 81);
+}
+
+input {
+  padding: 2.5px 4px 2.5px 6px;
+  border: 1px solid rgb(83, 84, 94);
+  border-radius: 10px;
+  font: inherit;
+  padding-top: 4px;
+  padding-bottom: 5px;
+  padding-left: 14px;
+  padding-right: 14px;
+  background-color: rgb(34, 37, 49);
+  color: currentcolor;
+  width: 100%;
+}
+
+input:hover {  
+  border: 1px solid;
+  border-color: white;
+  outline: 0 none;
+}
+
+input:focus {  
+  border: 1px solid;
+  border-color: rgb(187, 153, 255);
+  outline: 0 none;
 }

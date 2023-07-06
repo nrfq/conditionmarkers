@@ -23,6 +23,8 @@ import holding_action from "./images/holding_action.svg";
 import hunters_mark from "./images/hunters_mark.svg";
 import raging from "./images/raging.svg";
 import reaction_used from "./images/reaction_used.svg";
+import left from "./images/left.svg";
+import right from "./images/right.svg";
 
 /** Get the reverse domain name id for this plugin at a given path */
 export function getImage(image: string) {
@@ -77,6 +79,10 @@ export function getImage(image: string) {
             return raging;
         case "reaction_used":
             return reaction_used;
+        case "left":
+            return left;
+        case "right":
+            return right;
         default:
             return blinded;
     }
