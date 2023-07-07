@@ -35,6 +35,12 @@ As you select multiple icons, they will display in a grid-like fashion over the 
 
 ![Icons](https://raw.githubusercontent.com/kgbergman/conditionmarkers/main/docs/icongrid.jpg)
 
+
+If, for any reason you need to move or edit the icon, you can double click on it and unlock it like any other item in Owlbear Rodeo.
+
+![Move](https://raw.githubusercontent.com/kgbergman/conditionmarkers/main/docs/move.jpg)
+
+
 ## Known Issues
 
 There is a problem with the rotation translation algorithm. I am unsure if this is due to entering an improper parameter (centerX, centerY), or if this is an issue on OBR's behalf.
