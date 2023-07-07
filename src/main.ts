@@ -42,7 +42,7 @@ OBR.onReady(async () => {
   // Attach input listeners
   const input = document.querySelector(".condition-filter") as HTMLTextAreaElement;
   if (input) {
-    input.addEventListener("input", (event: Event) => {
+    input.addEventListener("input", () => {
       if (input.value !== "" && inputClear) {
         inputClear.style.visibility = "visible";
       }
@@ -55,7 +55,7 @@ OBR.onReady(async () => {
 
   const inputClear = document.querySelector(".clear-button") as HTMLButtonElement;
   if (inputClear && input) {
-    inputClear.addEventListener("click", (event: Event) => {
+    inputClear.addEventListener("click", () => {
       input.value = "";
       filterConditions(input.value);
       inputClear.style.visibility = "hidden";
