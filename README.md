@@ -1,3 +1,17 @@
+---
+title: Condition Markers
+description: "Quickly add condition markers to your characters to keep track of concentration, grapples, invisibility, etc."
+author: Keegan
+image: https://github.com/kgbergman/conditionmarkers/blob/main/docs/header.jpg
+icon: https://conditiontracker.onrender.com/logo.png
+tags:
+  - "tool"
+  - "content-pack"
+  - "combat"
+manifest: https://conditiontracker.onrender.com/manifest.json
+learn-more: https://github.com/kgbergman/conditionmarkers
+---
+
 # Condition Markers
 
 Quickly add condition markers to your characters to keep track of concentration, grapples, invisibility, etc.
