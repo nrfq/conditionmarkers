@@ -8,7 +8,7 @@ Credit for the marker designs goes to /u/JinxShadow on Reddit!
 
 ## Installing
 
-The extension can be installed from the [store page](https://extensions.owlbear.rodeo/condition-markers).
+The extension can be installed from the Owlbear Rodeo [extensions page](https://extensions.owlbear.rodeo/condition-markers).
 
 ## How it Works
 

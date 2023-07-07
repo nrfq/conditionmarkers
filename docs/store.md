@@ -2,8 +2,8 @@
 title: Condition Markers
 description: "Quickly add condition markers to your characters to keep track of concentration, grapples, invisibility, etc."
 author: Keegan
-image: https://github.com/kgbergman/conditionmarkers/blob/main/docs/header.jpg
-icon: https://conditiontracker.onrender.com/logo.png
+image: https://raw.githubusercontent.com/kgbergman/conditionmarkers/main/docs/header.jpg
+icon: https://raw.githubusercontent.com/kgbergman/conditionmarkers/main/public/logo.png
 tags:
   - "tool"
   - "content-pack"
@@ -18,9 +18,9 @@ Quickly add condition markers to your characters to keep track of concentration,
 
 Credit for the marker designs goes to /u/JinxShadow on Reddit!
 
-## How it Works
+**How it Works**
 
-Clicking the <img src="https://raw.githubusercontent.com/kgbergman/conditionmarkers/main/src/icon.svg" width=20 alt="Condition Marker Icon"> icon will display a popup with 16 icons.
+Clicking the <img src="https://raw.githubusercontent.com/kgbergman/conditionmarkers/main/src/icon.svg" width=20 alt="Condition Marker Icon"> icon when selecting a character will display a popup with 16 icons.
 These 16 icons can be clicked, which will display a transparent white overlay to indicate they are currently selected. Hovering over them will display their name. 
 
 ![Icon Name](https://raw.githubusercontent.com/kgbergman/conditionmarkers/main/docs/iconname.jpg)
@@ -40,7 +40,7 @@ As you select multiple icons, they will display in a grid-like fashion over the 
 
 ![Icons](https://raw.githubusercontent.com/kgbergman/conditionmarkers/main/docs/icongrid.jpg)
 
-## Support
+**Support**
 
 Feel free to email me at keegan.developer@gmail.com with any questions and I will try to answer them!
 
