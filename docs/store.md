@@ -20,10 +20,6 @@ Credit for the marker designs goes to /u/JinxShadow on Reddit!
 
 ![Interface](./docs/header.jpg)
 
-## Installing
-
-The extension can be installed from the [store page](https://extensions.owlbear.rodeo/condition-markers).
-
 ## How it Works
 
 This project is a simple Typescript app, which works similarly to the [Colored Rings](https://extensions.owlbear.rodeo/colored-rings) extension by Owlbear Rodeo, which was the basis for this project.
@@ -49,22 +45,8 @@ As you select multiple icons, they will display in a grid-like fashion over the 
 
 ![Filter](./docs/icongrid.jpg)
 
-## Known Issues
-
-There is a problem with the rotation translation algorithm. I am unsure if this is due to entering an improper parameter (centerX, centerY), or if this is an issue on OBR's behalf.
-The rotation works perfectly for intervals of 90 degrees, but icons are slightly spread out at any point between those intervals.
-
-## License
-
-Licensed under the Apache License, Version 2.0
-
-## Contributing
-
-I'm open to pull requests for bug fixes only. Pull requests for new features will not be accepted in order to keep the UI clean and simple.
-
 ## Support
 
 Feel free to email me at keegan.developer@gmail.com with any questions and I will try to answer them!
-
 
 Copyright (C) 2023 Keegan Bergman
