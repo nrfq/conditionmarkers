@@ -33,7 +33,7 @@ You can also filter the icons by typing their name in the filter box. Clearing t
 
 As you select multiple icons, they will display in a grid-like fashion over the selected character starting at the top left, with a minimum of 5 on a side.
 
-![Filter](https://raw.githubusercontent.com/kgbergman/conditionmarkers/main/docs/icongrid.jpg)
+![Icons](https://raw.githubusercontent.com/kgbergman/conditionmarkers/main/docs/icongrid.jpg)
 
 ## Known Issues
 

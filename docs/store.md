@@ -18,15 +18,10 @@ Quickly add condition markers to your characters to keep track of concentration,
 
 Credit for the marker designs goes to /u/JinxShadow on Reddit!
 
-![Interface](https://raw.githubusercontent.com/kgbergman/conditionmarkers/main/docs/header.jpg)
-
 ## How it Works
 
-This project is a simple Typescript app, which works similarly to the [Colored Rings](https://extensions.owlbear.rodeo/colored-rings) extension by Owlbear Rodeo, which was the basis for this project.
-
-The background script background.ts communicates with Owlbear Rodeo to create a context menu item, and when that item is clicked a popup is shown with the main.ts site rendered.
-
-The main.ts site displays an interface of 16 icons at a time. These 16 icons can be clicked, which will display a transparent white overlay to indicate they are currently selected. Hovering over them will display their name. 
+Clicking the "" icon will display a popup with 16 icons.
+These 16 icons can be clicked, which will display a transparent white overlay to indicate they are currently selected. Hovering over them will display their name. 
 
 ![Icon Name](https://raw.githubusercontent.com/kgbergman/conditionmarkers/main/docs/iconname.jpg)
 
@@ -43,7 +38,7 @@ You can also filter the icons by typing their name in the filter box. Clearing t
 
 As you select multiple icons, they will display in a grid-like fashion over the selected character starting at the top left, with a minimum of 5 on a side.
 
-![Filter](https://raw.githubusercontent.com/kgbergman/conditionmarkers/main/docs/icongrid.jpg)
+![Icons](https://raw.githubusercontent.com/kgbergman/conditionmarkers/main/docs/icongrid.jpg)
 
 ## Support
 
