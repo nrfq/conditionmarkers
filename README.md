@@ -1,6 +1,6 @@
 # Condition Markers
 
-Add condition markers to any character to keep track of things like grapples, exhaustion, invsibility, etc.
+Quickly add condition markers to your characters to keep track of concentration, grapples, invisibility, etc.
 
 Credit for the marker designs goes to /u/JinxShadow on Reddit!
 

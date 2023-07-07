@@ -2,8 +2,8 @@
   "name": "Condition Markers",
   "version": "1.0.0",
   "manifest_version": 1,
-  "author": "Keegan Bergman",
+  "author": "Keegan",
   "icon": "/logo.png",
   "background_url": "/background.html",
-  "description": "Quickly add condition markers to your characters to keep track of concentration, grapples, stuns, etc."
+  "description": "Quickly add condition markers to your characters to keep track of concentration, grapples, invisibility, etc."
 }
