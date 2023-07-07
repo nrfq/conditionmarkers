@@ -51,13 +51,16 @@ export async function buildConditionMarker(
   };
 
   const rotation = markerReturn.rotation;
+
+  const imageUrl = `https://conditiontracker.onrender.com/images/${name.toLowerCase().replaceAll(" ", "_").replaceAll("'", "").replaceAll("-", "")}.png`;
   
   const theImage = {
     width: markerReturn.size,
     height: markerReturn.size,
     mime: "image/jpg",
-    url: `https://conditiontracker.onrender.com/images/${name.toLowerCase().replaceAll(" ", "_").replaceAll("'", "").replaceAll("-", "")}.png`
+    url: imageUrl,
   }
+
   const marker = buildImage(theImage, attached.grid)
     .scale({ x: scale, y: scale })
     .rotation(rotation)

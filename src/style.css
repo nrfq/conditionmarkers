@@ -68,13 +68,12 @@ body {
   color: white;
   font-size: 8px;
   text-align: center;
-  width: 46px;
+  width: 50px;
+  height: 50px;
   overflow-wrap: break-word;
-  top: 2px;
-  left: 2px;
-  background-color: rgba(0, 0, 0, .75);
-  height: 46px;
-  border-radius: 23px;
+  top: 0px;
+  left: 0px;
+  border-radius: 0px;
   display: flex;
   align-items:center;
   justify-content:center;
@@ -170,4 +169,24 @@ input:focus {
   border: 1px solid;
   border-color: rgb(187, 153, 255);
   outline: 0 none;
+}
+
+.condition-name p {
+  margin: 0px;
+  background-color: rgba(93, 93, 94, 0.9);
+  width: 46px;
+  padding: 2px;
+  border-radius: 50px;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.00938em;
+  text-overflow: hidden;
+  /* Fade in tooltip - takes 1 second to go from 0% to 100% opac: */
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.condition-name:hover p {
+  visibility: visible;
+  opacity: 1;
 }

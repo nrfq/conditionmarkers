@@ -51,7 +51,7 @@ OBR.onReady(async () => {
     pageLeft.addEventListener("click", (event: Event) => {
       if (event && event.target) {
         const target = event.target as HTMLTextAreaElement
-        if (target.classList.contains("disabled") && currentPage > 1) {
+        if (!target.classList.contains("disabled") && currentPage > 1) {
           currentPage -= 1;
           showPage();
         }
@@ -62,7 +62,8 @@ OBR.onReady(async () => {
     pageRight.addEventListener("click", (event: Event) => {
       if (event && event.target) {
         const target = event.target as HTMLTextAreaElement
-        if (target.classList.contains("disabled") && currentPage < 4) {
+        console.log(target);
+        if (!target.classList.contains("disabled") && currentPage < 4) {
           currentPage += 1;
           showPage();
         }
@@ -88,8 +89,8 @@ async function loadConditions() {
               <div class="condition">
                 <img src="${getImage(condition)}"/>
               </div>
-              <div class="condition-name"><p>${condition}</p></div>
               <div class="selected-icon" id="${condition}Select"></div>
+              <div class="condition-name"><p>${condition}</p></div>
             </button>`
         )
         .join("")}
