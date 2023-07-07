@@ -28,8 +28,8 @@ OBR.onReady(() => {
       OBR.popover.open({
         id: getPluginId("condition-markers"),
         url: "/",
-        height: 255,
-        width: 262,
+        height: 260,
+        width: 260,
         anchorElementId: elementId,
       });
     },

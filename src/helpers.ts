@@ -56,7 +56,7 @@ export async function buildConditionMarker(
     width: markerReturn.size,
     height: markerReturn.size,
     mime: "image/jpg",
-    url: `https://conditiontracker.onrender.com/images/${name.toLowerCase().replace(" ", "_").replace("'", "").replace("-", "")}.png`
+    url: `https://conditiontracker.onrender.com/images/${name.toLowerCase().replaceAll(" ", "_").replaceAll("'", "").replaceAll("-", "")}.png`
   }
   const marker = buildImage(theImage, attached.grid)
     .scale({ x: scale, y: scale })
