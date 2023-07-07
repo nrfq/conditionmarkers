@@ -62,10 +62,10 @@ import foxs_cunning from "./images/foxs_cunning.svg";
 import owls_wisdom from "./images/owls_wisdom.svg";
 import left from "./images/left.svg";
 import right from "./images/right.svg";
+import close from "./images/close.svg";
 
 /** Get the svg for this image string */
 export function getImage(image: string) {
-    console.log(image.toLowerCase().replaceAll(" ", "_").replaceAll("'", "").replaceAll("-", ""));
     switch (image.toLowerCase().replaceAll(" ", "_").replaceAll("'", "").replaceAll("-", "")) {
         case "blinded":
             return blinded;
@@ -195,6 +195,8 @@ export function getImage(image: string) {
             return foxs_cunning;
         case "owls_wisdom":
             return owls_wisdom;
+        case "close":
+            return close;
         default:
             return blinded;
     }

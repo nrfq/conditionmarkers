@@ -18,6 +18,11 @@ OBR.onReady(async () => {
     <div class="conditions">
       <div class="search-area">
         <input class="condition-filter" placeholder="Filter" type="search"></input>
+        <div class="clear-button-div">
+          <button class="clear-button" tabindex="-1" type="button" aria-label="Clear" title="Clear">
+            <img class="clear-button-img" src="${getImage("close")}"/>
+          </button>
+        </div>
       </div>
       <div class="lower-flex">
         <div class="page-left disabled">
@@ -35,13 +40,25 @@ OBR.onReady(async () => {
   loadConditions();
   
   // Attach input listeners
-  const input = document.querySelector(".condition-filter");
+  const input = document.querySelector(".condition-filter") as HTMLTextAreaElement;
   if (input) {
     input.addEventListener("input", (event: Event) => {
-      if (event && event.target) {
-        const target = event.target as HTMLTextAreaElement;
-        filterConditions(target.value);
+      if (input.value !== "" && inputClear) {
+        inputClear.style.visibility = "visible";
       }
+      else if (inputClear) {
+        inputClear.style.visibility = "hidden";
+      }
+      filterConditions(input.value);
+    });
+  }
+
+  const inputClear = document.querySelector(".clear-button") as HTMLButtonElement;
+  if (inputClear && input) {
+    inputClear.addEventListener("click", (event: Event) => {
+      input.value = "";
+      filterConditions(input.value);
+      inputClear.style.visibility = "hidden";
     });
   }
   
@@ -62,7 +79,6 @@ OBR.onReady(async () => {
     pageRight.addEventListener("click", (event: Event) => {
       if (event && event.target) {
         const target = event.target as HTMLTextAreaElement
-        console.log(target);
         if (!target.classList.contains("disabled") && currentPage < 4) {
           currentPage += 1;
           showPage();
@@ -217,8 +233,8 @@ async function filterConditions(filterString: string) {
       selectedIcon.id = `${conditions[i]}Select`;
       conditionDiv.appendChild(conditionImg);
       button.appendChild(conditionDiv);
-      button.appendChild(conditionNameDiv);
       button.appendChild(selectedIcon);
+      button.appendChild(conditionNameDiv);
       
       button.addEventListener("click", () => {
         handleButtonClick(button);
@@ -304,6 +320,10 @@ async function handleButtonClick(button: HTMLButtonElement) {
         }
         itemsWithChangedMarkers.push(item);
       } else {
+        if (selectedButton) {
+          selectedButton.style.visibility = "visible";
+          selectedButton.classList.add("visible");
+        }
         markersToAdd.push(await buildConditionMarker(condition, item, item.scale.x, attachedMarkers.length));
       }
     }
