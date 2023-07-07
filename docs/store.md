@@ -20,7 +20,7 @@ Credit for the marker designs goes to /u/JinxShadow on Reddit!
 
 ## How it Works
 
-Clicking the "" icon will display a popup with 16 icons.
+Clicking the <img src="https://raw.githubusercontent.com/Croebh/owlbear-distances/main/public/icon.svg" width=24 alt="Condition Marker Icon"> icon will display a popup with 16 icons.
 These 16 icons can be clicked, which will display a transparent white overlay to indicate they are currently selected. Hovering over them will display their name. 
 
 ![Icon Name](https://raw.githubusercontent.com/kgbergman/conditionmarkers/main/docs/iconname.jpg)
