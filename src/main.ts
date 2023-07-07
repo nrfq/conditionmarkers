@@ -49,18 +49,23 @@ OBR.onReady(async () => {
   const pageRight = document.querySelector(".page-right");
   if (pageLeft) {
     pageLeft.addEventListener("click", (event: Event) => {
-      if (!event.target.classList.contains("disabled") && currentPage > 1) {
-        currentPage -= 1;
-        showPage();
+      if (event && event.target) {
+        const target = event.target as HTMLTextAreaElement
+        if (target.classList.contains("disabled") && currentPage > 1) {
+          currentPage -= 1;
+          showPage();
+        }
       }
     });
   }
   if (pageRight) {
     pageRight.addEventListener("click", (event: Event) => {
-      console.log("clicked");
-      if (!event.target.classList.contains("disabled") && currentPage < 4) {
-        currentPage += 1;
-        showPage();
+      if (event && event.target) {
+        const target = event.target as HTMLTextAreaElement
+        if (target.classList.contains("disabled") && currentPage < 4) {
+          currentPage += 1;
+          showPage();
+        }
       }
     });
   }
