@@ -63,10 +63,11 @@ import owls_wisdom from "./images/owls_wisdom.svg";
 import left from "./images/left.svg";
 import right from "./images/right.svg";
 import close from "./images/close.svg";
+import error from "./images/error.svg";
 
 /** Get the svg for this image string */
 export function getImage(image: string) {
-    switch (image.toLowerCase().replaceAll(" ", "_").replaceAll("'", "").replaceAll("-", "")) {
+    switch (image.toLowerCase().replace(/['-]/g, "").replace(/[ ]/g, "_")) {
         case "blinded":
             return blinded;
         case "charmed":
@@ -198,7 +199,7 @@ export function getImage(image: string) {
         case "close":
             return close;
         default:
-            return blinded;
+            return error;
     }
   }
   

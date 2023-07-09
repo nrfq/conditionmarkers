@@ -14,9 +14,7 @@ export function isPlainObject(
 export async function updateConditionButtons(items: Item[]) {
   const selection = await OBR.player.getSelection();
   // Remove all previous selected states
-  document.querySelectorAll(".selected-icon").forEach((element) => {
-    element.classList.remove("visible");
-  });
+  document.querySelectorAll(".selected-icon").forEach(element => element.classList.remove("visible"));
   // Get all the markers that are attached to our current selection
   for (const item of items) {
     const metadata = item.metadata[getPluginId("metadata")];
@@ -51,8 +49,7 @@ export async function buildConditionMarker(
   };
 
   const rotation = markerReturn.rotation;
-
-  const imageUrl = `https://conditiontracker.onrender.com/images/${name.toLowerCase().replaceAll(" ", "_").replaceAll("'", "").replaceAll("-", "")}.png`;
+  const imageUrl = `https://conditiontracker.onrender.com/images/${name.toLowerCase().replace(/['-]/g, "").replace(/[ ]/g, "_")}.png`;
   
   const theImage = {
     width: markerReturn.size,
@@ -126,14 +123,14 @@ async function getMarkerPosition(item: Image, count: number) {
     markerDimensionSize = imgWidth / markersWide;
   }
 
-  const left = item.position.x;
-  const top = item.position.y;
+  const itemLeft = item.position.x;
+  const itemTop = item.position.y;
 
   let row = Math.floor(count / markersWide);
   let col = count % markersWide;
   
-  let markerLeft = left + markerDimensionPos * col;
-  let markerTop = top + markerDimensionPos * row;
+  let markerLeft = itemLeft + markerDimensionPos * col;
+  let markerTop = itemTop + markerDimensionPos * row;
 
   //Reposition item based on rotation
   if (item.rotation !== 0) {
@@ -157,7 +154,6 @@ async function getMarkerPosition(item: Image, count: number) {
  * Reposition a marker after one was deleted, always hug the upper left corner
  */
 export async function repositionConditionMarker(item: Image) {
-
   //Grab all condition markers on the scene
   const conditionMarkers = await OBR.scene.items.getItems<Image>((item) => {
     const metadata = item.metadata[getPluginId("metadata")];
