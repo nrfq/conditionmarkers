@@ -12,7 +12,7 @@ The extension can be installed from the Owlbear Rodeo [extensions page](https://
 
 ## How it Works
 
-This project is a simple Typescript app, which works similarly to the [Colored Rings](https://extensions.owlbear.rodeo/colored-rings) extension by Owlbear Rodeo, which was the basis for this project.
+This project is a simple Typescript app and works similarly to the [Colored Rings](https://extensions.owlbear.rodeo/colored-rings) extension by Owlbear Rodeo, which was the basis for this project.
 
 The background script background.ts communicates with Owlbear Rodeo to create a context menu item, and when that item is clicked a popup is shown with the main.ts site rendered.
 
@@ -36,7 +36,7 @@ As you select multiple icons, they will display in a grid-like fashion over the 
 ![Icons](https://raw.githubusercontent.com/kgbergman/conditionmarkers/main/docs/icongrid.jpg)
 
 
-If, for any reason you need to move or edit the icon, you can double click on it and unlock it like any other item in Owlbear Rodeo.
+If for any reason you need to move or edit the icon, you can double-click on it and unlock it like any other item in Owlbear Rodeo.
 
 ![Move](https://raw.githubusercontent.com/kgbergman/conditionmarkers/main/docs/move.jpg)
 
@@ -56,7 +56,9 @@ I'm open to pull requests for bug fixes only. Pull requests for new features wil
 
 ## Support
 
-Feel free to email me at keegan.developer@gmail.com with any questions and I will try to answer them!
+If you want to support me financially, you can [buy me a coffee](https://www.buymeacoffee.com/keegandev)!
+
+Feel free to email me at keegan.developer@gmail.com with any questions about the extension and I will try to answer them!
 
 
 Copyright (C) 2023 Keegan Bergman
