@@ -77,7 +77,7 @@ body {
   padding: 3px;
   border: 0px none;
   border-radius: 12px;
-  height: 32.5px;
+  height: 33px;
 }
 
 .lower-flex {
@@ -150,6 +150,7 @@ input {
   background-color: rgb(34, 37, 49);
   color: currentcolor;
   width: 238px;
+  height: 33px;
   position: absolute;
 }
 

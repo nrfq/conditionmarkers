@@ -5,8 +5,10 @@ import { buildConditionMarker, isPlainObject, updateConditionButtons, reposition
 import "./style.css";
 import { getImage } from "./images";
 
+const PAGE_SIZE = 16;
+
 let currentPage = 1;
-let currentConditions = conditions.slice(0, 16);
+let currentConditions = conditions.slice(0, PAGE_SIZE);
 
 /**
  * This file represents the HTML of the popover that is shown once
@@ -14,33 +16,38 @@ let currentConditions = conditions.slice(0, 16);
  */
 OBR.onReady(async () => {
   // Setup the document with the condition buttons
-  document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
-    <div class="conditions">
-      <div class="search-area">
-        <input class="condition-filter" placeholder="Filter" type="search"></input>
-        <div class="clear-button-div">
-          <button class="clear-button" tabindex="-1" type="button" aria-label="Clear" title="Clear">
-            <img class="clear-button-img" src="${getImage("close")}"/>
-          </button>
+  const appContainer = document.querySelector<HTMLDivElement>("#app");
+  if (appContainer) {
+    appContainer.innerHTML = `
+      <div class="conditions">
+        <div class="search-area">
+          <input class="condition-filter" placeholder="Filter" type="search"></input>
+          <div class="clear-button-div">
+            <button class="clear-button" tabindex="-1" type="button" aria-label="Clear" title="Clear">
+              <img class="clear-button-img" src="${getImage("close")}"/>
+            </button>
+          </div>
+        </div>
+        <div class="lower-flex">
+          <div class="page-left disabled">
+            <img class="page-icon" src="${getImage("left")}"/>
+          </div>
+          <div class="conditions-area">
+          </div>
+          <div class="page-right">
+            <img class="page-icon" src="${getImage("right")}"/>
+          </div>
         </div>
       </div>
-      <div class="lower-flex">
-        <div class="page-left disabled">
-          <img class="page-icon" src="${getImage("left")}"/>
-        </div>
-        <div class="conditions-area">
-        </div>
-        <div class="page-right">
-          <img class="page-icon" src="${getImage("right")}"/>
-        </div>
-      </div>
-    </div>
-  `;
+    `;
+  }
 
   loadConditions();
   
   // Attach input listeners
   const input = document.querySelector(".condition-filter") as HTMLTextAreaElement;
+  const inputClear = document.querySelector(".clear-button") as HTMLButtonElement;
+
   if (input) {
     input.addEventListener("input", () => {
       if (input.value !== "" && inputClear) {
@@ -53,7 +60,6 @@ OBR.onReady(async () => {
     });
   }
 
-  const inputClear = document.querySelector(".clear-button") as HTMLButtonElement;
   if (inputClear && input) {
     inputClear.addEventListener("click", () => {
       input.value = "";
@@ -64,6 +70,7 @@ OBR.onReady(async () => {
   
   const pageLeft = document.querySelector(".page-left");
   const pageRight = document.querySelector(".page-right");
+
   if (pageLeft) {
     pageLeft.addEventListener("click", (event: Event) => {
       if (event && event.target) {
@@ -75,6 +82,7 @@ OBR.onReady(async () => {
       }
     });
   }
+
   if (pageRight) {
     pageRight.addEventListener("click", (event: Event) => {
       if (event && event.target) {
@@ -97,93 +105,91 @@ OBR.onReady(async () => {
 
 async function loadConditions() {
   const conditionsArea = document.querySelector(".conditions-area");
-  conditionsArea!.innerHTML = `
-      ${currentConditions
-        .map(
-          (condition) =>
-            `<button class="condition-button" id="${condition}">
-              <div class="condition">
-                <img src="${getImage(condition)}"/>
-              </div>
-              <div class="selected-icon" id="${condition}Select"></div>
-              <div class="condition-name"><p>${condition}</p></div>
-            </button>`
-        )
-        .join("")}
-  `;
+
+  if (conditionsArea) {
+    conditionsArea.innerHTML = `
+        ${currentConditions
+          .map(
+            (condition) =>
+              `<button class="condition-button" id="${condition}">
+                <div class="condition">
+                  <img src="${getImage(condition)}"/>
+                </div>
+                <div class="selected-icon" id="${condition}Select"></div>
+                <div class="condition-name"><p>${condition}</p></div>
+              </button>`
+          )
+          .join("")}
+    `;
   
-  // Attach click and hover listeners
-  document.querySelectorAll<HTMLButtonElement>(".condition-button").forEach((button) => {
-    button.addEventListener("click", () => {
-      handleButtonClick(button);
+    // Attach click and hover listeners
+    const conditionButtons = document.querySelectorAll<HTMLButtonElement>(".condition-button");
+
+    conditionButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        handleButtonClick(button);
+      });
+
+      button.addEventListener("mouseover", () => {
+        const conditionName = button.querySelector<HTMLDivElement>(".condition-name");
+        if (conditionName) {
+          conditionName.style.visibility = "visible";
+        }
+      });
+
+      button.addEventListener("mouseout", () => {
+        const conditionName = button.querySelector<HTMLDivElement>(".condition-name");
+        if (conditionName) {
+          conditionName.style.visibility = "hidden";
+        }
+      });
     });
 
-    button.addEventListener("mouseover", () => {
-      const conditionName = button.querySelector<HTMLDivElement>(".condition-name");
-      if (conditionName) {
-        conditionName.style.visibility = "visible";
-      }
-    });
-
-    button.addEventListener("mouseout", () => {
-      const conditionName = button.querySelector<HTMLDivElement>(".condition-name");
-      if (conditionName) {
-        conditionName.style.visibility = "hidden";
-      }
-    });
-  });
-
-  const allItems = await OBR.scene.items.getItems();
-  updateConditionButtons(allItems);
+    const allItems = await OBR.scene.items.getItems();
+    updateConditionButtons(allItems);
+  }
 }
 
 function showPage() {
-  switch(currentPage) {
-    case 1:
-      disablePage("left");
-      enablePage("right");
-      currentConditions = conditions.slice(0, 16);
-      break;
-    case 2:
-      enablePage("left");
-      enablePage("right");
-      currentConditions = conditions.slice(16, 32);
-      break;
-    case 3:
-      enablePage("left");
-      enablePage("right");
-      currentConditions = conditions.slice(32, 48);
-      break;
-    case 4:
-      enablePage("left");
-      disablePage("right");
-      currentConditions = conditions.slice(48, 64);
-      break;
-  }
-  loadConditions();
-}
+  const pageLeft = document.querySelector(".page-left") as HTMLDivElement;
+  const pageRight = document.querySelector(".page-right") as HTMLDivElement;
 
-function disablePage(page: string) {
-  const pageLeft = document.querySelector(".page-left");
-  const pageRight = document.querySelector(".page-right");
-
-  if (page === "left" && pageLeft) {
-    pageLeft.classList.add("disabled");
-  }
-  else if (page === "right" && pageRight) {
-    pageRight.classList.add("disabled");
+  if (pageLeft && pageRight) {
+    switch (currentPage) {
+      case 1:
+        disablePage(pageLeft);
+        enablePage(pageRight);
+        currentConditions = conditions.slice(0, PAGE_SIZE);
+        break;
+      case 2:
+        enablePage(pageLeft);
+        enablePage(pageRight);
+        currentConditions = conditions.slice(PAGE_SIZE, PAGE_SIZE * 2);
+        break;
+      case 3:
+        enablePage(pageLeft);
+        enablePage(pageRight);
+        currentConditions = conditions.slice(PAGE_SIZE * 2, PAGE_SIZE * 3);
+        break;
+      case 4:
+        enablePage(pageLeft);
+        disablePage(pageRight);
+        currentConditions = conditions.slice(PAGE_SIZE * 3, PAGE_SIZE * 4);
+        break;
+    }
+    loadConditions();
   }
 }
 
-function enablePage(page: string) {
-  const pageLeft = document.querySelector(".page-left");
-  const pageRight = document.querySelector(".page-right");
-  
-  if (page === "left" && pageLeft) {
-    pageLeft.classList.remove("disabled");
+function disablePage(page: HTMLElement | null) {
+  if (page) {
+    page.classList.add("disabled");
   }
-  else if (page === "right" && pageRight) {
-    pageRight.classList.remove("disabled");
+}
+
+function enablePage(page: HTMLElement | null) {
+  if (page) {
+    page.classList.remove("disabled");
   }
 }
 
@@ -192,14 +198,12 @@ async function filterConditions(filterString: string) {
     showPage();
     return;
   }
-  else {
-    disablePage("left");
-    disablePage("right");
-  }
-  const conditionsElem = document.querySelector(".conditions-area");
 
-  const conditionsToAdd = [];
-  
+  disablePage(document.querySelector(".page-left"));
+  disablePage(document.querySelector(".page-right"));
+
+  const conditionsElem = document.querySelector(".conditions-area");
+  const conditionsToAdd: HTMLElement[] = [];
   const selection = await OBR.player.getSelection();
   // Get all selected items
   const itemsSelected = await OBR.scene.items.getItems<Image>(selection);
@@ -209,33 +213,38 @@ async function filterConditions(filterString: string) {
     return Boolean(isPlainObject(metadata) && metadata.enabled);
   });
 
-  let attachedMarkers: any[] = [];
+  let attachedMarkers: Image[] = [];
   //Check whether this condition should be selected
   for (const item of itemsSelected) {
     // Find all markers attached to this item
     attachedMarkers = conditionMarkers.filter((marker) => marker.attachedTo === item.id);
   }
 
-  for (let i = 0; i < conditions.length; i++) {
-    if (conditions[i].toLowerCase().replace("-", "").replace("'", "").includes(filterString.toLowerCase())) {
-      const button = document.createElement("button");
+  for (const condition of conditions) {
+    if (condition.toLowerCase().replace("-", "").replace("'", "").includes(filterString.toLowerCase())) {      const button = document.createElement("button");
       button.className = "condition-button";
-      button.id = conditions[i];
+      button.id = condition;
+
       const conditionDiv = document.createElement("div");
       conditionDiv.className = "condition";
+
       const conditionImg = document.createElement("img");
-      conditionImg.setAttribute("src", getImage(conditions[i]));
-      const conditionNameDiv = document.createElement("div");
-      conditionNameDiv.className = "condition-name";
-      conditionNameDiv.innerHTML = `<p>${conditions[i]}</p>`;
-      const selectedIcon = document.createElement("div");
-      selectedIcon.className = "selected-icon";
-      selectedIcon.id = `${conditions[i]}Select`;
+      conditionImg.setAttribute("src", getImage(condition));
+
       conditionDiv.appendChild(conditionImg);
       button.appendChild(conditionDiv);
+
+      const selectedIcon = document.createElement("div");
+      selectedIcon.className = "selected-icon";
+      selectedIcon.id = `${condition}Select`;
+
+      const conditionNameDiv = document.createElement("div");
+      conditionNameDiv.className = "condition-name";
+      conditionNameDiv.innerHTML = `<p>${condition}</p>`;
+
       button.appendChild(selectedIcon);
       button.appendChild(conditionNameDiv);
-      
+        
       button.addEventListener("click", () => {
         handleButtonClick(button);
       });
@@ -254,24 +263,24 @@ async function filterConditions(filterString: string) {
         }
       });
       
-      const matchedMarkers = attachedMarkers.filter((marker) => marker.name.includes(conditions[i]));
+      const matchedMarkers = attachedMarkers.filter((marker) => marker.name.includes(condition));
       if (matchedMarkers.length !== 0) {
         selectedIcon.style.visibility = "visible";
       }
 
       conditionsToAdd.push(button);
     }
-  }
   
-  //Doing it this way prevents flickering
-  const conditionsNow = document.querySelectorAll<HTMLButtonElement>(".condition-button");
-  if (conditionsNow.length !== conditionsToAdd.length) {
+    // Remove existing buttons and add filtered buttons
+    const conditionsNow = document.querySelectorAll<HTMLButtonElement>(".condition-button");
+
     conditionsNow.forEach((button) => {
       conditionsElem?.removeChild(button);
-    })
+    });
+
     conditionsToAdd.forEach((button) => {
       conditionsElem?.appendChild(button);
-    })
+    });
 
     const allItems = await OBR.scene.items.getItems();
     updateConditionButtons(allItems);
@@ -279,39 +288,32 @@ async function filterConditions(filterString: string) {
 }
 
 async function handleButtonClick(button: HTMLButtonElement) {
-  // Get the condition and selection state
-  const condition = button.id; //Deafened, Blinded, Restrained, etc
+  const condition = button.id;
   let selected = false;
+
   const selectedButton = button.querySelector<HTMLDivElement>(".selected-icon");
-  if (selectedButton) {
-    if (selectedButton.classList.contains("visible")) {
-      selected = true;
-    }
-  } 
-  //Whether this button was already selected or not
+
+  if (selectedButton && selectedButton.classList.contains("visible")) {
+    selected = true;
+  }
+
   const selection = await OBR.player.getSelection();
 
-  if (selection) { //Create a condition marker and attach to the item or remove already placed marker
+  if (selection) {
     const markersToAdd: Image[] = [];
     const markersToDelete: string[] = [];
     const itemsWithChangedMarkers: Image[] = [];
 
-    // Get all selected items
     const itemsSelected = await OBR.scene.items.getItems<Image>(selection);
-    //Get all already made condition markers on the scene
     const conditionMarkers = await OBR.scene.items.getItems<Image>((item) => {
       const metadata = item.metadata[getPluginId("metadata")];
       return Boolean(isPlainObject(metadata) && metadata.enabled);
     });
 
     for (const item of itemsSelected) {
-      // Find all markers attached to this item
       const attachedMarkers = conditionMarkers.filter((marker) => marker.attachedTo === item.id);
-
-      // Find all markers of the selected name
       const matchedMarkers = attachedMarkers.filter((marker) => marker.name.includes(condition));
 
-      // Delete the marker if it is selected, otherwise add a new marker
       if (selected) {
         markersToDelete.push(...matchedMarkers.map((marker) => marker.id));
         if (selectedButton) {
@@ -327,17 +329,17 @@ async function handleButtonClick(button: HTMLButtonElement) {
         markersToAdd.push(await buildConditionMarker(condition, item, item.scale.x, attachedMarkers.length));
       }
     }
-    
+
     if (markersToAdd.length > 0) {
       await OBR.scene.items.addItems(markersToAdd);
     }
+
     if (markersToDelete.length > 0) {
       await OBR.scene.items.deleteItems(markersToDelete);
     }
 
-    // Reposition/shift other markers for items with deleted markers
-    for (let i = 0; i < itemsWithChangedMarkers.length; i++) {
-      repositionConditionMarker(itemsWithChangedMarkers[i]);
+    for (const item of itemsWithChangedMarkers) {
+      repositionConditionMarker(item);
     }
   }
 }
