@@ -102,6 +102,7 @@ OBR.onReady(async () => {
   // Add change listener for updating button states
   OBR.scene.items.onChange(updateConditionButtons);
 
+  // Auto focus search bar
   (document.getElementById("search-bar") as HTMLInputElement)?.select();
 });
 
