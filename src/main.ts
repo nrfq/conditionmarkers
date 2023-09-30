@@ -104,6 +104,13 @@ OBR.onReady(async () => {
 
   // Auto focus search bar
   (document.getElementById("search-bar") as HTMLInputElement)?.select();
+
+  // Attach keydown listener to close popover on "Escape" pressed
+  document.addEventListener('keydown', (event) => {
+    if (event.key == "Escape") {
+      OBR.popover.close(getPluginId("condition-markers"));
+    }
+  });
 });
 
 async function loadConditions() {
