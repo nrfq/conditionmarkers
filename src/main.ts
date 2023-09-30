@@ -65,6 +65,7 @@ OBR.onReady(async () => {
       input.value = "";
       filterConditions(input.value);
       inputClear.style.visibility = "hidden";
+      focusSearchBar();
     });
   }
   
@@ -80,6 +81,7 @@ OBR.onReady(async () => {
           showPage();
         }
       }
+      focusSearchBar();
     });
   }
 
@@ -92,6 +94,7 @@ OBR.onReady(async () => {
           showPage();
         }
       }
+      focusSearchBar();
     });
   }
 
@@ -103,7 +106,7 @@ OBR.onReady(async () => {
   OBR.scene.items.onChange(updateConditionButtons);
 
   // Auto focus search bar
-  (document.getElementById("search-bar") as HTMLInputElement)?.select();
+  focusSearchBar();
 
   // Attach keydown listener to close popover on "Escape" pressed
   document.addEventListener('keydown', (event) => {
@@ -352,4 +355,11 @@ async function handleButtonClick(button: HTMLButtonElement) {
       repositionConditionMarker(item);
     }
   }
+
+  focusSearchBar();
+}
+
+//focus search bar
+function focusSearchBar() {
+  (document.getElementById("search-bar") as HTMLInputElement)?.select();
 }
