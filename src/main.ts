@@ -21,7 +21,7 @@ OBR.onReady(async () => {
     appContainer.innerHTML = `
       <div class="conditions">
         <div class="search-area">
-          <input class="condition-filter" placeholder="Filter" type="search"></input>
+          <input class="condition-filter" placeholder="Filter" type="search" id="search-bar"></input>
           <div class="clear-button-div">
             <button class="clear-button" tabindex="-1" type="button" aria-label="Clear" title="Clear">
               <img class="clear-button-img" src="${getImage("close")}"/>
@@ -101,6 +101,8 @@ OBR.onReady(async () => {
 
   // Add change listener for updating button states
   OBR.scene.items.onChange(updateConditionButtons);
+
+  (document.getElementById("search-bar") as HTMLInputElement)?.select();
 });
 
 async function loadConditions() {
