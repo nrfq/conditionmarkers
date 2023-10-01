@@ -29,6 +29,11 @@ body {
   border: 0;
   margin: 0;
   user-select: none;
+  border-radius: 100%;
+}
+
+.condition-button:focus {
+  background: rgb(79, 74, 112);
 }
 
 .condition {
