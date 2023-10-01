@@ -111,7 +111,11 @@ OBR.onReady(async () => {
   // Attach keydown listener to close popover on "Escape" pressed
   document.addEventListener('keydown', (event) => {
     if (event.key == "Escape") {
-      OBR.popover.close(getPluginId("condition-markers"));
+      if (document.activeElement?.id === "search-bar") {
+        OBR.popover.close(getPluginId("condition-markers"));
+      } else {
+        focusSearchBar();
+      }
     }
   });
 });
