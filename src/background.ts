@@ -33,5 +33,6 @@ OBR.onReady(() => {
         anchorElementId: elementId,
       });
     },
+    shortcut: "Shift + C"
   });
 });
