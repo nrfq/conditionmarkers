@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "manifest_version": 3,
   "author": "Forked from Keegan!",
-  "icon": "conditionmarkers/logo.png",
-  "background_url": "conditionmarkers/background.html",
+  "icon": "/logo.png",
+  "background_url": "/background.html",
   "description": "Quickly add condition markers to your characters to keep track of concentration, grapples, invisibility, etc."
 }
