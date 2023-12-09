@@ -1,3 +1,6 @@
+# ⚠️THIS CURRENTLY DOES NOT WORK⚠️
+This was a side project to edit this extention to use my own custom icons. Currently the config is not working with the Github Pages resource pathing, so it is non-functional.
+
 # Condition Markers
 
 Quickly add condition markers to your characters to keep track of concentration, grapples, invisibility, etc.
