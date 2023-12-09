@@ -1,0 +1,9 @@
+{
+  "name": "Condition Markers",
+  "version": "1.0.2",
+  "manifest_version": 3,
+  "author": "Keegan",
+  "icon": "/logo.png",
+  "background_url": "/background.html",
+  "description": "Quickly add condition markers to your characters to keep track of concentration, grapples, invisibility, etc."
+}
